@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+  <title>Penggemukan Sapi Terpadu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">🐄</div>
+        <h2>SapiTerpadu</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">📊</span><span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-page="sapi">
+          <span class="nav-icon">🐄</span><span>Data Sapi</span>
+        </a>
+        <a href="#" class="nav-item" data-page="perawatan">
+          <span class="nav-icon">💊</span><span>Perawatan</span>
+        </a>
+        <a href="#" class="nav-item" data-page="medis">
+          <span class="nav-icon">🏥</span><span>Supervisi Medis</span>
+        </a>
+        <a href="#" class="nav-item" data-page="penjualan">
+          <span class="nav-icon">💰</span><span>Penjualan</span>
+        </a>
+        <a href="#" class="nav-item" data-page="keuangan">
+          <span class="nav-icon">📈</span><span>Rugi Laba</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <small>v1.0.0</small>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="topbar">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="topbar-actions">
+          <span id="datetime" class="datetime"></span>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- ===== DASHBOARD ===== -->
+        <div id="page-dashboard" class="page active">
+          <div class="stats-grid" id="dashboard-stats"></div>
+          <div class="dashboard-grid">
+            <div class="card">
+              <div class="card-header"><h3>🐄 Sapi Terbaru</h3></div>
+              <div class="card-body" id="dash-sapi-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>💰 Penjualan Terbaru</h3></div>
+              <div class="card-body" id="dash-jual-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== DATA SAPI ===== -->
+        <div id="page-sapi" class="page">
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openSapiModal()">+ Tambah Sapi</button>
+          </div>
+          <div class="table-wrapper">
+            <table id="table-sapi">
+              <thead>
+                <tr>
+                  <th>Tag ID</th><th>Nama</th><th>Jenis Kelamin</th><th>Berat Awal (kg)</th>
+                  <th>Berat Sekarang (kg)</th><th>Tgl Masuk</th><th>Harga Beli</th>
+                  <th>Status</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== PERAWATAN ===== -->
+        <div id="page-perawatan" class="page">
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openPerawatanModal()">+ Tambah Perawatan</button>
+          </div>
+          <div class="table-wrapper">
+            <table id="table-perawatan">
+              <thead>
+                <tr>
+                  <th>Tanggal</th><th>Tag ID</th><th>Nama Sapi</th><th>Jenis Perawatan</th>
+                  <th>Keterangan</th><th>Biaya</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== SUPERVISI MEDIS ===== -->
+        <div id="page-medis" class="page">
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openMedisModal()">+ Tambah Rekaman Medis</button>
+          </div>
+          <div class="table-wrapper">
+            <table id="table-medis">
+              <thead>
+                <tr>
+                  <th>Tanggal</th><th>Tag ID</th><th>Nama Sapi</th><th>Dokter</th>
+                  <th>Diagnosa</th><th>Tindakan</th><th>Obat</th><th>Biaya</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== PENJUALAN ===== -->
+        <div id="page-penjualan" class="page">
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openPenjualanModal()">+ Catat Penjualan</button>
+          </div>
+          <div class="table-wrapper">
+            <table id="table-penjualan">
+              <thead>
+                <tr>
+                  <th>Tgl Jual</th><th>Tag ID</th><th>Nama Sapi</th><th>Pembeli</th>
+                  <th>Berat Jual (kg)</th><th>Harga/kg</th><th>Total</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== RUGI LABA ===== -->
+        <div id="page-keuangan" class="page">
+          <div class="filter-bar">
+            <label>Dari: <input type="date" id="keu-dari"></label>
+            <label>Sampai: <input type="date" id="keu-sampai"></label>
+            <button class="btn btn-secondary" onclick="filterKeuangan()">Filter</button>
+          </div>
+          <div class="keuangan-summary" id="keuangan-summary"></div>
+          <div class="dashboard-grid">
+            <div class="card">
+              <div class="card-header"><h3>📋 Rincian Penjualan</h3></div>
+              <div class="card-body" id="keu-jual-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>💊 Biaya Perawatan & Medis</h3></div>
+              <div class="card-body" id="keu-biaya-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== MODAL: SAPI ===== -->
+  <div id="modal-sapi" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-sapi-title">Tambah Sapi</h3>
+        <button class="modal-close" onclick="closeModal('modal-sapi')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-sapi">
+          <input type="hidden" id="sapi-id">
+          <div class="form-group">
+            <label>Tag ID *</label>
+            <input type="text" id="sapi-tag" required placeholder="Contoh: SPT-001">
+          </div>
+          <div class="form-group">
+            <label>Nama Sapi *</label>
+            <input type="text" id="sapi-nama" required placeholder="Contoh: Bima">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Jenis Kelamin *</label>
+              <select id="sapi-jk" required>
+                <option value="">Pilih...</option>
+                <option value="Jantan">Jantan</option>
+                <option value="Betina">Betina</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="sapi-status">
+                <option value="Aktif">Aktif</option>
+                <option value="Sakit">Sakit</option>
+                <option value="Terjual">Terjual</option>
+                <option value="Meninggal">Meninggal</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Berat Awal (kg) *</label>
+              <input type="number" id="sapi-berat-awal" required min="0" step="0.1" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label>Berat Sekarang (kg)</label>
+              <input type="number" id="sapi-berat-sekarang" min="0" step="0.1" placeholder="0">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tanggal Masuk *</label>
+              <input type="date" id="sapi-tgl-masuk" required>
+            </div>
+            <div class="form-group">
+              <label>Harga Beli (Rp) *</label>
+              <input type="number" id="sapi-harga" required min="0" placeholder="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Keterangan</label>
+            <textarea id="sapi-ket" rows="2" placeholder="Opsional"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-sapi')">Batal</button>
+        <button class="btn btn-primary" onclick="saveSapi()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: PERAWATAN ===== -->
+  <div id="modal-perawatan" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-perawatan-title">Tambah Perawatan</h3>
+        <button class="modal-close" onclick="closeModal('modal-perawatan')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-perawatan">
+          <input type="hidden" id="perawatan-id">
+          <div class="form-group">
+            <label>Sapi *</label>
+            <select id="perawatan-sapi" required></select>
+          </div>
+          <div class="form-group">
+            <label>Jenis Perawatan *</label>
+            <input type="text" id="perawatan-jenis" required placeholder="Contoh: Vaksinasi, Pemberian Vitamin">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tanggal *</label>
+              <input type="date" id="perawatan-tgl" required>
+            </div>
+            <div class="form-group">
+              <label>Biaya (Rp)</label>
+              <input type="number" id="perawatan-biaya" min="0" placeholder="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Keterangan</label>
+            <textarea id="perawatan-ket" rows="2" placeholder="Opsional"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-perawatan')">Batal</button>
+        <button class="btn btn-primary" onclick="savePerawatan()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: MEDIS ===== -->
+  <div id="modal-medis" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-medis-title">Tambah Rekaman Medis</h3>
+        <button class="modal-close" onclick="closeModal('modal-medis')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-medis">
+          <input type="hidden" id="medis-id">
+          <div class="form-group">
+            <label>Sapi *</label>
+            <select id="medis-sapi" required></select>
+          </div>
+          <div class="form-group">
+            <label>Diagnosa *</label>
+            <input type="text" id="medis-diagnosa" required placeholder="Contoh: ISPA, Cacingan">
+          </div>
+          <div class="form-group">
+            <label>Dokter</label>
+            <input type="text" id="medis-dokter" placeholder="Nama dokter">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tanggal *</label>
+              <input type="date" id="medis-tgl" required>
+            </div>
+            <div class="form-group">
+              <label>Biaya (Rp)</label>
+              <input type="number" id="medis-biaya" min="0" placeholder="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tindakan</label>
+            <textarea id="medis-tindakan" rows="2" placeholder="Tindakan yang dilakukan"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Obat</label>
+            <input type="text" id="medis-obat" placeholder="Obat yang diberikan">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-medis')">Batal</button>
+        <button class="btn btn-primary" onclick="saveMedis()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: PENJUALAN ===== -->
+  <div id="modal-penjualan" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-penjualan-title">Catat Penjualan</h3>
+        <button class="modal-close" onclick="closeModal('modal-penjualan')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-penjualan">
+          <input type="hidden" id="penjualan-id">
+          <div class="form-group">
+            <label>Sapi *</label>
+            <select id="penjualan-sapi" required></select>
+          </div>
+          <div class="form-group">
+            <label>Pembeli *</label>
+            <input type="text" id="penjualan-pembeli" required placeholder="Nama pembeli">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tanggal Jual *</label>
+              <input type="date" id="penjualan-tgl" required>
+            </div>
+            <div class="form-group">
+              <label>Berat Jual (kg) *</label>
+              <input type="number" id="penjualan-berat" required min="0" step="0.1" placeholder="0" oninput="hitungTotalJual()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Harga per kg (Rp) *</label>
+            <input type="number" id="penjualan-harga-kg" required min="0" placeholder="0" oninput="hitungTotalJual()">
+          </div>
+          <div class="form-group">
+            <label>Total Harga (Rp)</label>
+            <input type="text" id="penjualan-total" readonly class="readonly-field">
+          </div>
+          <div class="form-group">
+            <label>Keterangan</label>
+            <textarea id="penjualan-ket" rows="2" placeholder="Opsional"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-penjualan')">Batal</button>
+        <button class="btn btn-primary" onclick="savePenjualan()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
