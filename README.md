@@ -29,5 +29,17 @@ npm start
 
 - **Frontend:** HTML, CSS, Vanilla JS (tanpa framework)
 - **Backend:** Electron (main process)
+
+  <img width="1420" height="889" alt="image" src="https://github.com/user-attachments/assets/86ac96da-c9da-45ad-bfe1-4dbbefba7c2e" />
+
+  <img width="1420" height="889" alt="image" src="https://github.com/user-attachments/assets/fdbec38f-7dd1-472f-9ed8-8f983dda5350" />
+
+  <img width="1420" height="889" alt="image" src="https://github.com/user-attachments/assets/29a7435d-0acb-4786-a6fa-855544a1f1b3" />
+
+  <img width="1420" height="889" alt="image" src="https://github.com/user-attachments/assets/3ed82089-c971-405a-a07e-aaa6d1aaa6a6" />
+
+
+
+
 - **Database:** better-sqlite3 (file-based, otomatis di folder userData)
 - **Arsitektur:** contextIsolation + IPC (preload bridge)
