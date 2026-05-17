@@ -1,0 +1,1 @@
+    const totalInvestasi = this.db.prepare(`SELECT COALESCE(SUM(harga_beli),0) as t FROM sapi WHERE status IN ('Aktif','Sakit')`).get().t;

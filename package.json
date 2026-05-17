@@ -1,0 +1,28 @@
+{
+  "name": "app-penggemukan-sapi",
+  "version": "1.0.0",
+  "description": "Aplikasi Pengelolaan Penggemukan Sapi Terpadu",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-rebuild": "^3.2.9"
+  },
+  "build": {
+    "appId": "com.appmsapi.penggemukansapi",
+    "productName": "Penggemukan Sapi Terpadu",
+    "files": [
+      "src/**/*"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
